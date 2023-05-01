@@ -1,8 +1,8 @@
-package uz.gita.weatherappinkotlinmvvm.data.response
+package uz.gita.weatherappinkotlinmvvm.data.response.current
 
-import uz.gita.weatherappinkotlinmvvm.data.common.ConditionData
-import uz.gita.weatherappinkotlinmvvm.data.common.CurrentData
-import uz.gita.weatherappinkotlinmvvm.data.common.LocationData
+import uz.gita.weatherappinkotlinmvvm.data.common.current.ConditionData
+import uz.gita.weatherappinkotlinmvvm.data.common.current.CurrentData
+import uz.gita.weatherappinkotlinmvvm.data.common.current.LocationData
 
 data class CurrentResponse(
     val current: Current,

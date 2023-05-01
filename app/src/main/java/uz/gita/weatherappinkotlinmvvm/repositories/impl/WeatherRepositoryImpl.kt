@@ -1,9 +1,15 @@
 package uz.gita.weatherappinkotlinmvvm.repositories.impl
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import uz.gita.weatherappinkotlinmvvm.data.common.CurrentData
-import uz.gita.weatherappinkotlinmvvm.data.response.toData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import uz.gita.weatherappinkotlinmvvm.data.common.current.CurrentData
+import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastData
+import uz.gita.weatherappinkotlinmvvm.data.response.current.toData
+import uz.gita.weatherappinkotlinmvvm.data.response.forecast.toData
 import uz.gita.weatherappinkotlinmvvm.data.source.remote.apis.CurrentApi
 import uz.gita.weatherappinkotlinmvvm.repositories.WeatherRepository
 
@@ -40,4 +46,17 @@ class WeatherRepositoryImpl private constructor(
     }
         .catch { emit(Result.failure(it)) }
         .flowOn(Dispatchers.IO)
+
+    override fun loadForecastWeatherByCity(cityName: String)
+            : Flow<Result<ForecastData>> = flow {
+        val response = currentApi.getForecastWeatherByCity(API_KEY, cityName)
+        when (response.code()) {
+            in 200..299 -> {
+                val forecastResponse = response.body() ?: return@flow
+                val forecastData = forecastResponse.forecast.toData()
+                Log.d("AAA", "Repository = ${forecastData.forecastday.size}")
+                emit(Result.success(forecastData))
+            }
+        }
+    }
 }

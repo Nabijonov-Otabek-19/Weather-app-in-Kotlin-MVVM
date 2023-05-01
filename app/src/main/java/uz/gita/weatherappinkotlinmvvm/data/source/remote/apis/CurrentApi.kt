@@ -3,7 +3,8 @@ package uz.gita.weatherappinkotlinmvvm.data.source.remote.apis
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import uz.gita.weatherappinkotlinmvvm.data.response.CurrentResponse
+import uz.gita.weatherappinkotlinmvvm.data.response.current.CurrentResponse
+import uz.gita.weatherappinkotlinmvvm.data.response.forecast.ForecastResponse
 
 interface CurrentApi {
     @GET("current.json")
@@ -11,4 +12,8 @@ interface CurrentApi {
         @Query("key") key: String,
         @Query("q") cityName: String
     ): Response<CurrentResponse>
+
+    @GET("forecast.json")
+    suspend fun getForecastWeatherByCity(@Query("key") key: String, @Query("q") cityName: String):
+            Response<ForecastResponse>
 }

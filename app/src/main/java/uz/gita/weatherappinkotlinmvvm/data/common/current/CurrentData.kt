@@ -1,4 +1,4 @@
-package uz.gita.weatherappinkotlinmvvm.data.common
+package uz.gita.weatherappinkotlinmvvm.data.common.current
 
 data class CurrentData(
     val condition: ConditionData,

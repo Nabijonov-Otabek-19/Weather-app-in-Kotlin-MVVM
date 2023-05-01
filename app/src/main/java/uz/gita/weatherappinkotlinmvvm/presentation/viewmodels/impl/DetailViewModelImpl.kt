@@ -1,13 +1,15 @@
 package uz.gita.weatherappinkotlinmvvm.presentation.viewmodels.impl
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import uz.gita.weatherappinkotlinmvvm.data.common.CurrentData
-import uz.gita.weatherappinkotlinmvvm.repositories.impl.WeatherRepositoryImpl
+import uz.gita.weatherappinkotlinmvvm.data.common.current.CurrentData
+import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastdayData
 import uz.gita.weatherappinkotlinmvvm.presentation.viewmodels.DetailViewModel
+import uz.gita.weatherappinkotlinmvvm.repositories.impl.WeatherRepositoryImpl
 
 class DetailViewModelImpl : DetailViewModel, ViewModel() {
 
@@ -17,6 +19,9 @@ class DetailViewModelImpl : DetailViewModel, ViewModel() {
     override val successLiveData: MutableLiveData<CurrentData> = MutableLiveData()
     override val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
+    override val successForecastLiveData: MutableLiveData<List<ForecastdayData>> = MutableLiveData()
+    override val errorForecastLiveData: MutableLiveData<String> = MutableLiveData()
+
     override fun loadWeather(cityName: String) {
         loadingLiveData.value = true
 
@@ -24,6 +29,14 @@ class DetailViewModelImpl : DetailViewModel, ViewModel() {
             .onEach { loadingLiveData.value = false }
             .onEach { it.onSuccess { successLiveData.value = it } }
             .onEach { it.onFailure { errorLiveData.value = it.message } }
+            .launchIn(viewModelScope)
+    }
+
+    override fun loadForecast(cityName: String) {
+        weatherRepository.loadForecastWeatherByCity(cityName)
+            .onEach { it.onSuccess { successForecastLiveData.value = it.forecastday
+            Log.d("AAA", "ViewModel = ${it.forecastday.size}") } }
+            .onEach { it.onFailure { errorForecastLiveData.value = it.message } }
             .launchIn(viewModelScope)
     }
 }
