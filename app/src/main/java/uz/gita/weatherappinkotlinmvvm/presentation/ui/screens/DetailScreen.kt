@@ -1,7 +1,6 @@
 package uz.gita.weatherappinkotlinmvvm.presentation.ui.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -9,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import uz.gita.weatherappinkotlinmvvm.R
 import uz.gita.weatherappinkotlinmvvm.data.common.CurrentData
 import uz.gita.weatherappinkotlinmvvm.data.source.local.SharedPref
@@ -26,36 +26,49 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        currentLocation.getCurrentLocation()
-        val lat = sharedPref.location
-
         //viewModel.loadWeather("Tashkent")
-        viewModel.loadWeather(lat)
+        viewModel.loadWeather(getLocation())
         viewModel.errorLiveData.observe(viewLifecycleOwner, errorObserver)
         viewModel.successLiveData.observe(viewLifecycleOwner, successObserver)
         viewModel.loadingLiveData.observe(viewLifecycleOwner, loadingObserver)
+
+        viewBinding.refresh.setOnRefreshListener {
+            viewModel.loadWeather(getLocation())
+        }
+    }
+
+    private fun getLocation(): String {
+        viewBinding.refresh.isRefreshing = true
+        currentLocation.getCurrentLocation()
+        viewBinding.refresh.isRefreshing = false
+        return sharedPref.location
     }
 
     private val loadingObserver = Observer<Boolean> {
         val isVisibleLoading = if (it) View.VISIBLE else View.GONE
         val isVisible = if (!it) View.VISIBLE else View.GONE
         viewBinding.progress.visibility = isVisibleLoading
-        viewBinding.txtCity.visibility = isVisible
-        viewBinding.txtDegree.visibility = isVisible
-        viewBinding.txtTime.visibility = isVisible
-        viewBinding.imgIcon.visibility = isVisible
+        viewBinding.linear.visibility = isVisible
+        viewBinding.linear2.visibility = isVisible
+        viewBinding.detailsContainer.visibility = isVisible
     }
 
-    private val successObserver = Observer<CurrentData> { value: CurrentData ->
+    private val successObserver = Observer { value: CurrentData ->
         Glide.with(requireContext())
             .load(value.condition.icon)
             .placeholder(R.drawable.ic_launcher_background)
             .into(viewBinding.imgIcon)
 
         viewBinding.apply {
-            txtTime.text = value.last_updated
+            txtData.text = value.last_updated
             txtCity.text = value.locationData.name
-            txtDegree.text = value.temp_c.toString()
+            txtTemperature.text = value.temp_c.toString()
+            txtStatus.text = value.condition.text
+            Glide.with(requireContext())
+                .load("https:${value.condition.icon}")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imgIcon)
         }
     }
 

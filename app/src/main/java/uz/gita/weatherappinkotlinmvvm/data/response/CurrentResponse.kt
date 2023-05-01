@@ -3,7 +3,6 @@ package uz.gita.weatherappinkotlinmvvm.data.response
 import uz.gita.weatherappinkotlinmvvm.data.common.ConditionData
 import uz.gita.weatherappinkotlinmvvm.data.common.CurrentData
 import uz.gita.weatherappinkotlinmvvm.data.common.LocationData
-import uz.gita.weatherappinkotlinmvvm.data.source.remote.Network
 
 data class CurrentResponse(
     val current: Current,
@@ -57,4 +56,4 @@ fun Location.toData() = LocationData(country, localtime, name, region)
 
 fun Current.toData(locationData: LocationData) = CurrentData(condition.toData(), humidity, last_updated, temp_c, locationData)
 
-fun Condition.toData() = ConditionData("${Network.BASE_URL}${icon.takeLast(icon.length - 1)}", text)
+fun Condition.toData() = ConditionData(icon, text)
