@@ -46,6 +46,13 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
 
         viewModel.successForecastLiveData.observe(viewLifecycleOwner) {
             adapter.setData( it.forecastday[0].hour)
+
+            viewBinding.apply {
+                sunrise.text = it.forecastday[0].astro.sunrise
+                sunset.text = it.forecastday[0].astro.sunset
+                moonrise.text = it.forecastday[0].astro.moonrise
+                moonset.text = it.forecastday[0].astro.moonset
+            }
         }
 
         viewModel.errorForecastLiveData.observe(viewLifecycleOwner) {
