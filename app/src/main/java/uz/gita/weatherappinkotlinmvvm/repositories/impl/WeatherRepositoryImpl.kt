@@ -49,7 +49,13 @@ class WeatherRepositoryImpl private constructor(
 
     override fun loadForecastWeatherByCity(cityName: String)
             : Flow<Result<ForecastData>> = flow {
+
+        // Forecast.json
         val response = currentApi.getForecastWeatherByCity(API_KEY, "Tashkent")
+
+        // Future.json
+        //val response = currentApi.getForecastWeatherByCity(API_KEY, "Tashkent", "2023-05-03")
+
         when (response.code()) {
             in 200..299 -> {
                 val forecastResponse = response.body() ?: return@flow

@@ -16,4 +16,10 @@ interface CurrentApi {
     @GET("forecast.json")
     suspend fun getForecastWeatherByCity(@Query("key") key: String, @Query("q") cityName: String):
             Response<ForecastResponse>
+
+//    @GET("future.json")
+//    suspend fun getForecastWeatherByCity(
+//        @Query("key") key: String, @Query("q") cityName: String,
+//        @Query("dt") data: String
+//    ): Response<ForecastResponse>
 }

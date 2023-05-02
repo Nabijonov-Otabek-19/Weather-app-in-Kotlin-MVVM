@@ -1,6 +1,5 @@
 package uz.gita.weatherappinkotlinmvvm.presentation.viewmodels.impl
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,8 +33,7 @@ class DetailViewModelImpl : DetailViewModel, ViewModel() {
 
     override fun loadForecast(cityName: String) {
         weatherRepository.loadForecastWeatherByCity(cityName)
-            .onEach { it.onSuccess { successForecastLiveData.value = it.forecastday
-            Log.d("AAA", "ViewModel = ${it.forecastday.size}") } }
+            .onEach { it.onSuccess { successForecastLiveData.value = it.forecastday } }
             .onEach { it.onFailure { errorForecastLiveData.value = it.message } }
             .launchIn(viewModelScope)
     }
