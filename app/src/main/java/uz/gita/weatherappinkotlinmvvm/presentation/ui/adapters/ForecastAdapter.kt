@@ -1,21 +1,19 @@
 package uz.gita.weatherappinkotlinmvvm.presentation.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
 import uz.gita.weatherappinkotlinmvvm.data.common.forecast.HourData
 import uz.gita.weatherappinkotlinmvvm.databinding.ItemForecastBinding
-import java.time.format.DateTimeFormatter
 
 class ForecastAdapter : Adapter<ForecastAdapter.ItemHolder>() {
 
-    private var list = ArrayList<HourData>()
+    private var list: List<HourData> = ArrayList()
 
     fun setData(l: List<HourData>) {
-        list.clear()
-        list.addAll(l)
+        list = l
         notifyDataSetChanged()
     }
 
@@ -27,8 +25,10 @@ class ForecastAdapter : Adapter<ForecastAdapter.ItemHolder>() {
                 val time = list[adapterPosition].time
 
                 txtTime.text = time.substring(11, time.length)
-                txtTemperature.text = list[adapterPosition].temp_c.toString() + "℃"
+                txtTemperature.text = list[adapterPosition].temp_c.toInt().toString() + "℃"
 
+                val url = "https:${list[adapterPosition].condition.icon}"
+                Glide.with(binding.root.context).load(url).into(imgIcon)
             }
         }
     }

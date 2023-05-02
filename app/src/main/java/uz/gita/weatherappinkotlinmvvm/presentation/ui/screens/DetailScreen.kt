@@ -25,7 +25,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
     private val adapter by lazy { ForecastAdapter() }
 
     private val currentLocation by lazy { CurrentLocation.getInstance(requireActivity()) }
-    private val sharedPref by lazy { SharedPref.getInstance(requireActivity()) }
+    private val sharedPref by lazy { SharedPref.getInstance(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -45,7 +45,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
         viewModel.loadingLiveData.observe(viewLifecycleOwner, loadingObserver)
 
         viewModel.successForecastLiveData.observe(viewLifecycleOwner) {
-            adapter.setData(it)
+            adapter.setData( it.forecastday[0].hour)
         }
 
         viewModel.errorForecastLiveData.observe(viewLifecycleOwner) {
@@ -54,6 +54,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
 
         viewBinding.refresh.setOnRefreshListener {
             viewModel.loadWeather(getLocation())
+            viewModel.loadForecast(getLocation())
         }
     }
 
@@ -82,7 +83,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
         viewBinding.apply {
             txtData.text = value.last_updated
             txtCity.text = value.locationData.name
-            txtTemperature.text = value.temp_c.toString() + "℃"
+            txtTemperature.text = value.temp_c.toInt().toString() + "℃"
             txtStatus.text = value.condition.text
             Glide.with(requireContext())
                 .load("https:${value.condition.icon}")

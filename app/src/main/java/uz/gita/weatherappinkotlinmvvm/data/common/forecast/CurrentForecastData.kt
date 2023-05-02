@@ -6,11 +6,23 @@ data class ForecastData(
 )
 
 data class ForecastdayData(
-    val date: String,
+    val astro: AstroData,
     val hour: List<HourData>
+)
+
+data class ConditionData(
+    val icon: String
 )
 
 data class HourData(
     val temp_c: Double,
-    val time: String
+    val time: String,
+    val condition: ConditionData
+)
+
+data class AstroData(
+    val moonrise: String,
+    val moonset: String,
+    val sunrise: String,
+    val sunset: String
 )

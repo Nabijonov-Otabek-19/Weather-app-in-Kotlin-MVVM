@@ -1,5 +1,7 @@
 package uz.gita.weatherappinkotlinmvvm.data.response.forecast
 
+import uz.gita.weatherappinkotlinmvvm.data.common.forecast.AstroData
+import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ConditionData
 import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastData
 import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastdayData
 import uz.gita.weatherappinkotlinmvvm.data.common.forecast.HourData
@@ -8,18 +10,7 @@ data class ForecastResponse(
     val current: Current,
     val forecast: Forecast,
     val location: Location
-) {
-    fun toData(): List<HourData> {
-        val list = ArrayList<HourData>()
-
-        forecast.forecastday.forEach {
-            it.hour.forEach { hour ->
-                list.add(hour.toData())
-            }
-        }
-        return list
-    }
-}
+)
 
 data class Current(
     val cloud: Int,
@@ -146,8 +137,13 @@ data class Astro(
     val sunset: String
 )
 
+
 fun Forecast.toData() = ForecastData(forecastday.map { it.toData() })
 
-fun Forecastday.toData() = ForecastdayData(date, hour.map { it.toData() })
+fun Forecastday.toData() = ForecastdayData(astro.toData(), hour.map { it.toData() })
 
-fun Hour.toData() = HourData(temp_c, time)
+fun Hour.toData() = HourData(temp_c, time, condition.toData())
+
+fun Condition.toData() = ConditionData(icon)
+
+fun Astro.toData() = AstroData(moonrise, moonset, sunrise, sunset)
