@@ -8,7 +8,18 @@ data class ForecastResponse(
     val current: Current,
     val forecast: Forecast,
     val location: Location
-)
+) {
+    fun toData(): List<HourData> {
+        val list = ArrayList<HourData>()
+
+        forecast.forecastday.forEach {
+            it.hour.forEach { hour ->
+                list.add(hour.toData())
+            }
+        }
+        return list
+    }
+}
 
 data class Current(
     val cloud: Int,
@@ -134,7 +145,6 @@ data class Astro(
     val sunrise: String,
     val sunset: String
 )
-
 
 fun Forecast.toData() = ForecastData(forecastday.map { it.toData() })
 

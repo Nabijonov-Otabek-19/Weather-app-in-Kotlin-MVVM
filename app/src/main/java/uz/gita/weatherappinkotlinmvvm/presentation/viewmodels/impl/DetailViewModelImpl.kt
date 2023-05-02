@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.weatherappinkotlinmvvm.data.common.current.CurrentData
-import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastdayData
+import uz.gita.weatherappinkotlinmvvm.data.common.forecast.HourData
 import uz.gita.weatherappinkotlinmvvm.presentation.viewmodels.DetailViewModel
 import uz.gita.weatherappinkotlinmvvm.repositories.impl.WeatherRepositoryImpl
 
@@ -18,7 +18,7 @@ class DetailViewModelImpl : DetailViewModel, ViewModel() {
     override val successLiveData: MutableLiveData<CurrentData> = MutableLiveData()
     override val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    override val successForecastLiveData: MutableLiveData<List<ForecastdayData>> = MutableLiveData()
+    override val successForecastLiveData: MutableLiveData<List<HourData>> = MutableLiveData()
     override val errorForecastLiveData: MutableLiveData<String> = MutableLiveData()
 
     override fun loadWeather(cityName: String) {
@@ -33,7 +33,7 @@ class DetailViewModelImpl : DetailViewModel, ViewModel() {
 
     override fun loadForecast(cityName: String) {
         weatherRepository.loadForecastWeatherByCity(cityName)
-            .onEach { it.onSuccess { successForecastLiveData.value = it.forecastday } }
+            .onEach { it.onSuccess { successForecastLiveData.value = it } }
             .onEach { it.onFailure { errorForecastLiveData.value = it.message } }
             .launchIn(viewModelScope)
     }

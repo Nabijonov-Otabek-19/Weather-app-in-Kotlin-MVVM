@@ -82,7 +82,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
         viewBinding.apply {
             txtData.text = value.last_updated
             txtCity.text = value.locationData.name
-            txtTemperature.text = value.temp_c.toString()
+            txtTemperature.text = value.temp_c.toString() + "℃"
             txtStatus.text = value.condition.text
             Glide.with(requireContext())
                 .load("https:${value.condition.icon}")

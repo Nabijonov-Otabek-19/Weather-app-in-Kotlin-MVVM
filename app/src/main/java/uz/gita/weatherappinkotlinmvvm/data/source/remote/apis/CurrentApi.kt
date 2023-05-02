@@ -14,8 +14,13 @@ interface CurrentApi {
     ): Response<CurrentResponse>
 
     @GET("forecast.json")
-    suspend fun getForecastWeatherByCity(@Query("key") key: String, @Query("q") cityName: String):
-            Response<ForecastResponse>
+    suspend fun getForecastWeatherByCity(
+        @Query("key") key: String,
+        @Query("q") cityName: String,
+        @Query("days") day: Int = 1,
+        @Query("aqi") aqi: String = "no",
+        @Query("alerts") alert: String = "no"
+    ): Response<ForecastResponse>
 
 //    @GET("future.json")
 //    suspend fun getForecastWeatherByCity(
