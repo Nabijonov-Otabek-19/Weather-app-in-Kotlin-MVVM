@@ -11,7 +11,7 @@ import uz.gita.weatherappinkotlinmvvm.data.source.local.SharedPref
 //Latitude va Longtitude ni olish
 class CurrentLocation private constructor(private val context: Activity) {
 
-    private val sharedPref = SharedPref.getInstance(context)
+    private val sharedPref = SharedPref.getInstance()
 
     companion object {
         @SuppressLint("StaticFieldLeak")

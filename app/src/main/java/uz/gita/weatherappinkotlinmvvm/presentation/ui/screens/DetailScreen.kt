@@ -25,7 +25,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
     private val adapter by lazy { ForecastAdapter() }
 
     private val currentLocation by lazy { CurrentLocation.getInstance(requireActivity()) }
-    private val sharedPref by lazy { SharedPref.getInstance(requireContext()) }
+    private val sharedPref by lazy { SharedPref.getInstance() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -45,7 +45,7 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
         viewModel.loadingLiveData.observe(viewLifecycleOwner, loadingObserver)
 
         viewModel.successForecastLiveData.observe(viewLifecycleOwner) {
-            adapter.setData( it.forecastday[0].hour)
+            adapter.setData(it.forecastday[0].hour)
 
             viewBinding.apply {
                 sunrise.text = it.forecastday[0].astro.sunrise
@@ -59,16 +59,16 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
 
-        viewBinding.refresh.setOnRefreshListener {
+        viewBinding.btnReload.setOnClickListener {
+            viewBinding.progress.visibility = View.VISIBLE
             viewModel.loadWeather(getLocation())
             viewModel.loadForecast(getLocation())
+            viewBinding.progress.visibility = View.GONE
         }
     }
 
     private fun getLocation(): String {
-        viewBinding.refresh.isRefreshing = true
         currentLocation.getCurrentLocation()
-        viewBinding.refresh.isRefreshing = false
         return sharedPref.location
     }
 
@@ -79,12 +79,12 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
         viewBinding.linear.visibility = isVisible
         viewBinding.linear2.visibility = isVisible
         viewBinding.recyclerForecast.visibility = isVisible
+        viewBinding.btnReload.visibility = isVisible
     }
 
     private val successObserver = Observer { value: CurrentData ->
         Glide.with(requireContext())
             .load(value.condition.icon)
-            .placeholder(R.drawable.ic_launcher_background)
             .into(viewBinding.imgIcon)
 
         viewBinding.apply {

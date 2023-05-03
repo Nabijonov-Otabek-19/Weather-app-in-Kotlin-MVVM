@@ -14,15 +14,17 @@ class SharedPref private constructor() {
         private lateinit var pref: SharedPreferences
         private lateinit var editor: SharedPreferences.Editor
 
-        fun getInstance(context: Context): SharedPref {
+        fun init(context: Context) {
             pref = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
             editor = pref.edit()
 
             if (!(::sharedPref.isInitialized)) {
                 sharedPref = SharedPref()
             }
-            return sharedPref
         }
+
+        fun getInstance(): SharedPref = sharedPref
+
     }
 
     var location: String
