@@ -36,7 +36,6 @@ class DetailScreen : Fragment(R.layout.screen_detail) {
             recyclerForecast.adapter = adapter
         }
 
-        //viewModel.loadWeather("Tashkent")
         viewModel.loadWeather(getLocation())
         viewModel.loadForecast(getLocation())
 
