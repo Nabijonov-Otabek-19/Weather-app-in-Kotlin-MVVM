@@ -54,6 +54,7 @@ data class Condition(
 
 fun Location.toData() = LocationData(country, localtime, name, region)
 
-fun Current.toData(locationData: LocationData) = CurrentData(condition.toData(), humidity, last_updated, temp_c, locationData)
+fun Current.toData(locationData: LocationData) =
+    CurrentData(condition.toData(), humidity, last_updated, temp_c, locationData)
 
 fun Condition.toData() = ConditionData(icon, text)

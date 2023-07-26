@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.onEach
 import uz.gita.weatherappinkotlinmvvm.data.common.current.CurrentData
 import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastData
 import uz.gita.weatherappinkotlinmvvm.presentation.viewmodels.DetailViewModel
-import uz.gita.weatherappinkotlinmvvm.repositories.impl.WeatherRepositoryImpl
+import uz.gita.weatherappinkotlinmvvm.domain.repository.WeatherRepositoryImpl
 
 class DetailViewModelImpl : DetailViewModel, ViewModel() {
 

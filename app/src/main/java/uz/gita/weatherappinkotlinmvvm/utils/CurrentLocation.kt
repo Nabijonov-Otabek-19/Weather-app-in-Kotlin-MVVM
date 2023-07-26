@@ -1,7 +1,7 @@
 package uz.gita.weatherappinkotlinmvvm.utils
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
@@ -9,15 +9,14 @@ import uz.gita.weatherappinkotlinmvvm.data.source.local.SharedPref
 
 
 //Latitude va Longtitude ni olish
-class CurrentLocation private constructor(private val context: Activity) {
+class CurrentLocation private constructor(private val context: Context) {
 
     private val sharedPref = SharedPref.getInstance()
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private lateinit var location: CurrentLocation
+         lateinit var location: CurrentLocation
 
-        fun getInstance(context: Activity): CurrentLocation {
+        fun getInstance(context: Context): CurrentLocation {
             if (!(::location.isInitialized)) {
                 location = CurrentLocation(context)
             }
@@ -40,7 +39,7 @@ class CurrentLocation private constructor(private val context: Activity) {
             != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                context,
+                context as Activity,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
             )
             return

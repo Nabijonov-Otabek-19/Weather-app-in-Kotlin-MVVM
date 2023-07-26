@@ -3,7 +3,7 @@ package uz.gita.weatherappinkotlinmvvm.app
 import android.app.Application
 import uz.gita.weatherappinkotlinmvvm.data.source.local.SharedPref
 import uz.gita.weatherappinkotlinmvvm.data.source.remote.Network
-import uz.gita.weatherappinkotlinmvvm.repositories.impl.WeatherRepositoryImpl
+import uz.gita.weatherappinkotlinmvvm.domain.repository.WeatherRepositoryImpl
 
 class App : Application() {
 

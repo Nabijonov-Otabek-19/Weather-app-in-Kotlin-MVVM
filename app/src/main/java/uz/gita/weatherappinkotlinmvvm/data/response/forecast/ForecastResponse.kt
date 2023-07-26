@@ -142,7 +142,8 @@ fun Forecast.toData() = ForecastData(forecastday.map { it.toData() })
 
 fun Forecastday.toData() = ForecastdayData(astro.toData(), hour.map { it.toData() })
 
-fun Hour.toData() = HourData(temp_c, time, condition.toData())
+fun Hour.toData() = HourData(temp_c, time, condition.toData()
+)
 
 fun Condition.toData() = ConditionData(icon)
 

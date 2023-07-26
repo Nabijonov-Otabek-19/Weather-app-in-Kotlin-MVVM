@@ -24,7 +24,6 @@ class SharedPref private constructor() {
         }
 
         fun getInstance(): SharedPref = sharedPref
-
     }
 
     var location: String

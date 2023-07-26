@@ -1,4 +1,4 @@
-package uz.gita.weatherappinkotlinmvvm.repositories.impl
+package uz.gita.weatherappinkotlinmvvm.domain.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +10,6 @@ import uz.gita.weatherappinkotlinmvvm.data.common.forecast.ForecastData
 import uz.gita.weatherappinkotlinmvvm.data.response.current.toData
 import uz.gita.weatherappinkotlinmvvm.data.response.forecast.toData
 import uz.gita.weatherappinkotlinmvvm.data.source.remote.apis.CurrentApi
-import uz.gita.weatherappinkotlinmvvm.repositories.WeatherRepository
 
 class WeatherRepositoryImpl private constructor(
     private val currentApi: CurrentApi
@@ -19,7 +18,7 @@ class WeatherRepositoryImpl private constructor(
     private val API_KEY = "b1f04b7df0e9422994080010233004"
 
     companion object {
-        private var weatherRepository: WeatherRepository? = null
+        private var weatherRepository: WeatherRepositoryImpl? = null
 
         fun init(currentApi: CurrentApi) {
             if (weatherRepository == null) {
@@ -27,7 +26,7 @@ class WeatherRepositoryImpl private constructor(
             }
         }
 
-        fun getInstance(): WeatherRepository = weatherRepository!!
+        fun getInstance(): WeatherRepositoryImpl = weatherRepository!!
     }
 
     override fun loadCurrentWeatherByCity(cityName: String): Flow<Result<CurrentData>> = flow {
